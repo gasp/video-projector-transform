@@ -40,8 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const pTranslateY = pane.addInput(PARAMS, 'translateY', { min: -700, max: 700, step: 10 })
   const pRotate = pane.addInput(PARAMS, 'rotate', { min: -.02, max: .02, step: .001 })
   pane.addSeparator()
-  const pSkewX = pane.addInput(PARAMS, 'skewX', { min: -10, max: 10, step: .5 })
-  const pSkewY = pane.addInput(PARAMS, 'skewY', { min: -10, max: 10, step: .5 })
+  const pSkewX = pane.addInput(PARAMS, 'skewX', { min: -15, max: 15, step: .5 })
+  const pSkewY = pane.addInput(PARAMS, 'skewY', { min: -15, max: 15, step: .5 })
   pane.addSeparator()
   const pPerspective = pane.addInput(PARAMS, 'perspective', { min: 80, max: 1024, step: 1, label: 'depth' })
   const pRotateX = pane.addInput(PARAMS, 'rotateX', { min: -.02, max: .02, step: .001 })
@@ -84,6 +84,22 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   pane.addSeparator()
+  const pFull = pane.addButton({
+    title: 'full screen',
+  })
+
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  pFull.on('click', () => {
+    toggleFullScreen()
+  })
   const pClose = pane.addButton({
     title: 'close',
   })
