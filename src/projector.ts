@@ -13,7 +13,7 @@ type params = {
   rotateY: number;
 }
 
-const PARAMS: params & { color: string } = {
+let PARAMS: params & { color: string } = {
   perspective: 500,
   scale: 1,
   translateX: 0,
@@ -29,6 +29,37 @@ const PARAMS: params & { color: string } = {
 window.addEventListener('DOMContentLoaded', () => {
   const $app = document.getElementById('app')
   if (!$app) throw new Error('#app not found')
+
+  const localStorage = window.localStorage.getItem('proj')
+  const localParams = localStorage ? JSON.parse(localStorage) : {}
+
+  PARAMS = {...PARAMS, ...localParams}
+
+  const transform = ({
+    perspective,
+    scale,
+    translateX,
+    translateY,
+    skewX,
+    skewY,
+    rotate,
+    rotateX,
+    rotateY,
+  }: params) => {
+    $app.style.transform = `
+      perspective(${perspective}px)
+      scale(${scale})
+      translateX(${translateX}px)
+      translateY(${translateY}px)
+      skewX(${skewX}deg)
+      skewY(${skewY}deg)
+      rotate(${rotate}turn)
+      rotateX(${rotateX}turn)
+      rotateY(${rotateY}turn)
+    `
+  }
+
+  transform(PARAMS) ;
 
   const pane = new Pane({
     title: 'Positioning',
@@ -100,6 +131,17 @@ window.addEventListener('DOMContentLoaded', () => {
   pFull.on('click', () => {
     toggleFullScreen()
   })
+
+  const pSave = pane.addButton({
+    title: 'save',
+  })
+
+  pSave.on('click', () => {
+    window.localStorage.setItem('proj', JSON.stringify(PARAMS))
+  })
+
+
+
   const pClose = pane.addButton({
     title: 'close',
   })
@@ -107,29 +149,5 @@ window.addEventListener('DOMContentLoaded', () => {
   pClose.on('click', () => {
     pane.dispose()
   })
-
-  const transform = ({
-    perspective,
-    scale,
-    translateX,
-    translateY,
-    skewX,
-    skewY,
-    rotate,
-    rotateX,
-    rotateY,
-  }: params) => {
-    $app.style.transform = `
-      perspective(${perspective}px)
-      scale(${scale})
-      translateX(${translateX}px)
-      translateY(${translateY}px)
-      skewX(${skewX}deg)
-      skewY(${skewY}deg)
-      rotate(${rotate}turn)
-      rotateX(${rotateX}turn)
-      rotateY(${rotateY}turn)
-    `
-  }
 
 })
