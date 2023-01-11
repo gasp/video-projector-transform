@@ -34,7 +34,6 @@ window.addEventListener('DOMContentLoaded', () => {
     title: 'Positioning',
     expanded: true,
   })
-  
 
   const pScale = pane.addInput(PARAMS, 'scale', { min: 0.1, max: 1.5, step: .1 })
   const pTranslateX = pane.addInput(PARAMS, 'translateX', { min: -1000, max: 1000, step: 10 })
@@ -79,9 +78,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   pane.addSeparator()
-  const pColor = pane.addInput(PARAMS, 'color', { picker: 'inline',  })
+  const pColor = pane.addInput(PARAMS, 'color')
   pColor.on('change', function (ev) {
     $app.style.borderColor = ev.value
+  })
+
+  pane.addSeparator()
+  const pClose = pane.addButton({
+    title: 'close',
+  })
+
+  pClose.on('click', () => {
+    pane.dispose()
   })
 
   const transform = ({
